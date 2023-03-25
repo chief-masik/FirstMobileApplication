@@ -4,52 +4,44 @@ import static android.content.ContentValues.TAG;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main1);
+
+        TextView nameText = findViewById(R.id.textView);
+        String text = getResources().getString(R.string.text_hello);
+        nameText.setText(text);
+
+        ImageView imageView2 = findViewById(R.id.imageView2);
+        imageView2.setImageResource(R.drawable.hello);
+
         Toast.makeText(getApplicationContext(), "onCreate", Toast.LENGTH_LONG).show();
         Log.e(TAG,"onCreate");
     }
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Toast.makeText(getApplicationContext(), "onStart", Toast.LENGTH_LONG).show();
-        Log.w(TAG,"onStart");
+
+    public void onClickButton(View view) {
+        Log.i(TAG,"ButtonOn");
+
+        EditText nameText1 = findViewById(R.id.editTextTextPersonName);
+        EditText nameText2 = findViewById(R.id.editTextTextPersonName2);
+        String name = nameText1.getText().toString();
+        String password = nameText2.getText().toString();
+
+        Intent intent = new Intent(this, Main2Activity.class);
+        intent.putExtra("name", name);
+        intent.putExtra("password", password);
+        startActivity(intent);
     }
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Toast.makeText(getApplicationContext(), "onStop", Toast.LENGTH_LONG).show();
-        Log.i(TAG,"onStop");
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Toast.makeText(getApplicationContext(), "onDestroy", Toast.LENGTH_LONG).show();
-        Log.d(TAG,"onDestroy");
-    }
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Toast.makeText(getApplicationContext(), "onPause", Toast.LENGTH_LONG).show();
-        Log.v(TAG,"onPause");
-    }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Toast.makeText(getApplicationContext(), "onResume", Toast.LENGTH_LONG).show();
-        Log.i(TAG,"onResume");
-    }
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Toast.makeText(getApplicationContext(), "onRestart", Toast.LENGTH_LONG).show();
-        Log.i(TAG,"onRestart");
-    }
+
 }

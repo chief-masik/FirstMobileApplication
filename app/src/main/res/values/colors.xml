@@ -13,4 +13,6 @@
     <color name="greenV">#39CF7D</color>
     <color name="orangeV">#FD4127</color>
     <color name="white_green">#A0B699</color>
+    <color name="background1">#EFFEFF</color>
+    <color name="background2">#FAFFFF</color>
 </resources>
