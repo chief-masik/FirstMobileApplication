@@ -17,31 +17,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main1);
-
-        TextView nameText = findViewById(R.id.textView);
-        String text = getResources().getString(R.string.text_hello);
-        nameText.setText(text);
-
-        ImageView imageView2 = findViewById(R.id.imageView2);
-        imageView2.setImageResource(R.drawable.hello);
-
-        Toast.makeText(getApplicationContext(), "onCreate", Toast.LENGTH_LONG).show();
-        Log.e(TAG,"onCreate");
+        setContentView(R.layout.activity_main);
+        if(savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .add(R.id.fragmentContainerView, AuthenticationFragment.class, null)
+                    .commit();
+        }
     }
 
-    public void onClickButton(View view) {
-        Log.i(TAG,"ButtonOn");
-
-        EditText nameText1 = findViewById(R.id.editTextTextPersonName);
-        EditText nameText2 = findViewById(R.id.editTextTextPersonName2);
-        String name = nameText1.getText().toString();
-        String password = nameText2.getText().toString();
-
-        Intent intent = new Intent(this, Main2Activity.class);
-        intent.putExtra("name", name);
-        intent.putExtra("password", password);
-        startActivity(intent);
-    }
 
 }
