@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class LakeActivity extends AppCompatActivity {
+    /*
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,4 +34,5 @@ public class LakeActivity extends AppCompatActivity {
         setResult(RESULT_OK, intent);
         finish();
     }
+    */
 }

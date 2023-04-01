@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 
 public class Main2Activity extends AppCompatActivity {
+    /*
     private TextView nameText;
     private ActivityResultLauncher<Intent> activityLauncher;
 
@@ -62,4 +63,6 @@ public class Main2Activity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+     */
 }
