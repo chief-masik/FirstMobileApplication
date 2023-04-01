@@ -10,23 +10,42 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 public class LakesFragment extends Fragment {
 
     static final private String TAG = "ThirdFr";
+    private String name;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        name = getArguments().getString("name");
         Toast.makeText(getContext(), "OnCreate", Toast.LENGTH_SHORT).show();
         Log.d(TAG,"onCreate");
     }
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view1 = inflater.inflate(R.layout.fragment_lakes,container,false);
+        Button buttonLake = (Button) view1.findViewById(R.id.buttomAdd);
+        buttonLake.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText itemText = (EditText) view1.findViewById(R.id.editTextTextPersonName3);
+                Bundle bundle = new Bundle();
+                bundle.putString("item",itemText.getText().toString());
+                bundle.putString("name", name);
+                getParentFragmentManager().beginTransaction().setReorderingAllowed(true)
+                        .replace(R.id.fragmentContainerView, BookingFragment.class, bundle)
+                        .commit();
+            }
+        });
 
-        Toast.makeText(getContext(), "OnCreateView", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Эксклюзивный список для " + name, Toast.LENGTH_SHORT).show();
         Log.d(TAG,"onCreateView");
-        return inflater.inflate(R.layout.fragment_lakes, container, false);
+        return view1;
     }
+
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view,savedInstanceState);
         Toast.makeText(getContext(), "OnViewCreated", Toast.LENGTH_SHORT).show();

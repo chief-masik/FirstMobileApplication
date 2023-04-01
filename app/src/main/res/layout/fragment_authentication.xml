@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:text="продолжить"
             android:textSize="@dimen/button_text_size"
-            android:onClick="onClickButton" />
+            />
     </LinearLayout>
 
 </FrameLayout>
