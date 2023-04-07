@@ -5,59 +5,58 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
-public class BookingFragment extends Fragment implements View.OnClickListener {
-    static final private String TAG = "SecondFr";
+import com.example.firstApplication.model.Item;
+import com.example.firstApplication.model.ItemAdapter;
+
+import java.util.ArrayList;
+
+public class RiversFragment extends Fragment {
+    static final private String TAG = "RiversFr";
+    private RecyclerView recyclerView;
     private String name;
-    private String password;
-    private String item;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         name = getArguments().getString("name");
-        password = getArguments().getString("password");
-        item = getArguments().getString("item");
         Log.d(TAG,"onCreate");
     }
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view1 = inflater.inflate(R.layout.fragment_booking,container,false);
-        Button buttonLake = (Button) view1.findViewById(R.id.buttonLake);
-        Button buttonRiver = (Button) view1.findViewById(R.id.buttonRiver);
-        buttonLake.setOnClickListener(this);
-        buttonRiver.setOnClickListener(this);
-        if(item != null) {
-            TextView nameText = (TextView) view1.findViewById(R.id.textViewContent);
-            nameText.setText(item);
+        View view1 = inflater.inflate(R.layout.fragment_rivers,container,false);
+        recyclerView = (RecyclerView) view1.findViewById(R.id.RecyclerView);
+        ArrayList<Item> arrayList = new ArrayList<>();
+        for(int i = 0; i < 67; i++) {
+            arrayList.add(new Item(R.drawable.river_ob,"Река Обь"));
+            arrayList.add(new Item(R.drawable.river_volga,"Река Волга"));
+            arrayList.add(new Item(R.drawable.river_yenisey,"Река Енисей"));
         }
-        if (name != null)
-            Toast.makeText(getContext(),"Привет, " + name + "!", Toast.LENGTH_SHORT).show();
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        ItemAdapter adapter = new ItemAdapter(getActivity(), arrayList, new ItemAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                String item = arrayList.get(position).getNameItem();
+                Bundle bundle = new Bundle();
+                bundle.putString("item", item);
+                bundle.putString("name", name);
+                getParentFragmentManager().beginTransaction().setReorderingAllowed(true)
+                        .replace(R.id.fragmentContainerView, BookingFragment.class, bundle).commit();
+                Log.i("ListView", "element number " + position +" click");
+            }
+        });
+        recyclerView.setAdapter(adapter);
+
+        Toast.makeText(getContext(), "Эксклюзивный список для " + name, Toast.LENGTH_SHORT).show();
         Log.d(TAG,"onCreateView");
         return view1;
-    }
-    @Override
-    public void onClick(View view) {
-        Bundle bundle = new Bundle();
-        bundle.putString("name",name);
-        switch (view.getId()) {
-            case R.id.buttonRiver:
-                getParentFragmentManager().beginTransaction()
-                        .setReorderingAllowed(true)
-                        .replace(R.id.fragmentContainerView, RiversFragment.class, bundle).commit();
-                break;
-            case R.id.buttonLake:
-                getParentFragmentManager().beginTransaction()
-                        .setReorderingAllowed(true)
-                        .replace(R.id.fragmentContainerView, LakesFragment.class, bundle).commit();
-                break;
-        }
     }
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
