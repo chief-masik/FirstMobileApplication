@@ -1,9 +1,16 @@
 package com.example.firstApplication;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import android.Manifest;
 
 import com.example.firstApplication.model.Item;
 import com.example.firstApplication.model.ItemAdapter;
@@ -20,7 +28,9 @@ import com.example.firstApplication.model.ItemAdapter;
 import java.util.ArrayList;
 
 public class RiversFragment extends Fragment {
-    static final private String TAG = "RiversFr";
+    private final static String TAG = "RiversFr";
+    private final static String CHANNEL_ID = "River channel";
+    private final static int NOTIFY_ID = 101;
     private RecyclerView recyclerView;
     private String name;
     @Override
@@ -28,6 +38,13 @@ public class RiversFragment extends Fragment {
         super.onCreate(savedInstanceState);
         name = getArguments().getString("name");
         Log.d(TAG,"onCreate");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Channel 2";
+            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager notificationManager = getContext().getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
     }
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view1 = inflater.inflate(R.layout.fragment_rivers,container,false);
@@ -49,6 +66,19 @@ public class RiversFragment extends Fragment {
                 bundle.putString("name", name);
                 getParentFragmentManager().beginTransaction().setReorderingAllowed(true)
                         .replace(R.id.fragmentContainerView, BookingFragment.class, bundle).commit();
+
+                NotificationCompat.Builder builder = new
+                        NotificationCompat.Builder(getContext(), CHANNEL_ID)
+                        .setSmallIcon(R.drawable.ic_launcher_foreground)
+                        .setContentTitle(getString(
+                                R.string.content_title_rivers))
+                        .setContentText(item + " выбрана!")
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext());
+                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                    notificationManager.notify(NOTIFY_ID, builder.build());
+                }
+
                 Log.i("ListView", "element number " + position +" click");
             }
         });
