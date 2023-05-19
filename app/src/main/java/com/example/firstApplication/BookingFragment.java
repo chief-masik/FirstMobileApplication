@@ -1,5 +1,6 @@
 package com.example.firstApplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -46,6 +47,8 @@ public class BookingFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         Bundle bundle = new Bundle();
         bundle.putString("name",name);
+        Intent intent = new Intent(view.getContext(), MyService.class);
+        getContext().startService(intent);
         switch (view.getId()) {
             case R.id.buttonRiver:
                 getParentFragmentManager().beginTransaction()
